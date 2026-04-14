@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">ML Placement Predictor</h1>
+        <p class="text-gray-500 mt-2">Enter your stats to generate your probability score and personalized action plan.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+            <h2 class="text-xl font-bold mb-6 text-gray-700 border-b pb-2"><i class="fas fa-user-edit mr-2"></i> Student Profile</h2>
+            <form action="/predictor" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">CGPA (0.0 - 10.0)</label>
+                    <input type="number" step="0.01" min="0" max="10" name="cgpa" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">DSA Score (1 - 10)</label>
+                    <input type="number" step="0.1" min="1" max="10" name="dsa" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Number of Projects</label>
+                    <input type="number" min="0" name="projects" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Internships Completed</label>
+                    <input type="number" min="0" name="internship" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Communication Skills (1 - 10)</label>
+                    <input type="number" step="0.1" min="1" max="10" name="comm" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition shadow-md mt-4">
+                    Run Prediction Model
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 flex flex-col justify-center">
+            {% if submitted %}
+                <div class="text-center mb-6">
+                    <h2 class="text-lg text-gray-500 font-semibold mb-1">Placement Probability</h2>
+                    <div class="text-5xl font-black {{ result_color }} mb-2">{{ probability }}%</div>
+                    <p class="text-lg font-bold text-gray-700">{{ result_text }}</p>
+                </div>
+
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+                    <div class="bg-blue-600 h-3 rounded-full" style="width: {{ probability }}%"></div>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-100 text-center">
+                    <p class="text-sm text-gray-600 mb-1">The model identified your weakest link as:</p>
+                    <p class="text-xl font-bold text-red-600 mb-4">{{ weakest }}</p>
+                    <a href="/gym" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition text-sm">
+                        <i class="fas fa-dumbbell mr-1"></i> Train this skill in the Gym
+                    </a>
+                </div>
+            {% else %}
+                <div class="text-center text-gray-400 py-10">
+                    <i class="fas fa-clipboard-list text-6xl mb-4 text-gray-300"></i>
+                    <h2 class="text-xl font-bold mb-2">Awaiting Data</h2>
+                    <p class="text-sm">Submit your profile on the left to see your results and unlock the Training Gym.</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

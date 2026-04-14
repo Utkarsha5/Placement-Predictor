@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusML Placement Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+
+    <nav class="bg-blue-700 shadow-md">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                
+                <div class="flex items-center space-x-2 text-white">
+                    <i class="fas fa-graduation-cap text-2xl"></i>
+                    <a href="/" class="font-bold text-xl tracking-wide">CampusML</a>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <a href="/" class="text-blue-100 hover:text-white font-medium transition">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </a>
+                    <a href="/predictor" class="text-blue-100 hover:text-white font-medium transition">
+                        <i class="fas fa-chart-line mr-1"></i> Predictor
+                    </a>
+                    <a href="/gym" class="text-blue-100 hover:text-white font-medium transition">
+                        <i class="fas fa-dumbbell mr-1"></i> The Gym
+                    </a>
+                    
+                    <a href="/reset" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-1.5 px-4 rounded-full shadow transition ml-4">
+                        <i class="fas fa-trash-alt mr-1"></i> Reset Data
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full py-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center mt-auto">
+        <p class="text-sm">Built with Flask & Logistic Regression</p>
+    </footer>
+
+</body>
+</html>
