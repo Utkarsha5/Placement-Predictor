@@ -1,157 +1,69 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto px-4">
+<div class="max-w-7xl mx-auto px-6 mt-12">
     
-    <div class="text-center mb-12">
-        <div class="inline-block bg-blue-100 p-4 rounded-full mb-4 shadow-sm">
-            <i class="fas fa-dumbbell text-4xl text-blue-600"></i>
-        </div>
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-3">The Training Gym</h1>
-        <p class="text-xl text-gray-600">Explore all training modules below.</p>
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-extrabold text-slate-900 tracking-tight mb-4">The Training <span class="text-indigo-600">Gym</span></h1>
+        <p class="text-lg text-slate-500 font-medium">Strategic resources to bridge your skill gaps.</p>
         
         {% if weak_skill %}
-        <div class="mt-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 shadow-sm text-left max-w-3xl mx-auto">
-            <div class="flex items-center mb-2">
-                <i class="fas fa-robot text-blue-600 text-xl mr-2"></i>
-                <h3 class="font-bold text-gray-800 text-lg">AI Coach Assessment</h3>
+        <div class="mt-10 bg-indigo-600 rounded-3xl p-8 text-left shadow-2xl shadow-indigo-100 relative overflow-hidden max-w-4xl mx-auto">
+            <div class="relative z-10">
+                <div class="flex items-center space-x-3 text-indigo-100 mb-4">
+                    <i class="fas fa-brain text-xl"></i>
+                    <span class="font-bold uppercase tracking-widest text-xs">AI Performance Coach</span>
+                </div>
+                <h3 class="text-2xl md:text-3xl font-bold text-white leading-relaxed">"{{ ai_advice }}"</h3>
             </div>
-            <p class="text-gray-700 italic leading-relaxed">"{{ ai_advice }}"</p>
-        </div>
-        {% else %}
-        <div class="mt-4 inline-block bg-blue-50 border border-blue-200 rounded-lg px-6 py-3 shadow-sm">
-            <p class="text-blue-800 font-medium">
-                <i class="fas fa-lightbulb text-yellow-500 mr-1"></i> 
-                Want a personalized AI training plan? 
-                <a href="/predictor" class="font-bold underline hover:text-blue-600 ml-1">Take the Predictor Test</a>
-            </p>
+            <div class="absolute -right-20 -bottom-20 opacity-10 text-[200px] text-white">
+                <i class="fas fa-quote-right"></i>
+            </div>
         </div>
         {% endif %}
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% set modules = [
+            ('DSA', 'Data Structures', 'Master core algorithms & competitive coding patterns.', 'fa-code', 'bg-sky-100 text-sky-600', 'https://leetcode.com/discuss/general-discussion/460599/blind-75-leetcode-questions'),
+            ('Projects', 'Development', 'Build full-stack applications to showcase technical depth.', 'fa-laptop-code', 'bg-emerald-100 text-emerald-600', 'https://www.freecodecamp.org/learn'),
+            ('Internships', 'Industry Experience', 'Gain business context by working on real-world problems.', 'fa-briefcase', 'bg-violet-100 text-violet-600', 'https://www.theforage.com/'),
+            ('Comm Skills', 'Soft Skills', 'Perfect your STAR method and behavioral articulation.', 'fa-comments', 'bg-orange-100 text-orange-600', 'https://www.pramp.com/'),
+            ('CGPA', 'Academic Excellence', 'Reinforce core computer science theory & fundamentals.', 'fa-book-open', 'bg-rose-100 text-rose-600', 'https://nptel.ac.in/')
+        ] %}
 
-        <div class="bg-white p-6 rounded-xl border-2 transition duration-200 relative flex flex-col h-full
-            {% if weak_skill == 'DSA' %} border-blue-500 shadow-xl bg-blue-50 ring-4 ring-blue-100 {% else %} border-gray-100 shadow-md hover:shadow-lg {% endif %}">
+        {% for id, title, desc, icon, colors, link in modules %}
+        <div class="group bg-white p-8 rounded-3xl border border-slate-200 transition-all hover:shadow-2xl hover:-translate-y-2 relative flex flex-col h-full
+            {% if weak_skill == id %} ring-4 ring-indigo-600 ring-offset-4 border-transparent shadow-2xl {% endif %}">
             
-            {% if weak_skill == 'DSA' %}
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
-                <i class="fas fa-star text-yellow-300 mr-1"></i> Recommended Focus
+            {% if weak_skill == id %}
+            <div class="absolute -top-4 right-6 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+                Priority
             </div>
             {% endif %}
             
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mr-3">
-                    <i class="fas fa-code"></i>
+            <div class="flex items-center mb-6">
+                <div class="w-14 h-14 rounded-2xl {{ colors }} flex items-center justify-center text-2xl shadow-sm">
+                    <i class="fas {{ icon }}"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800">Data Structures</h3>
             </div>
-            <p class="text-gray-600 mb-6 flex-grow text-sm">Master the core algorithmic patterns frequently asked in technical interviews.</p>
             
-            <div class="space-y-2 mt-auto">
-                <a href="https://leetcode.com/discuss/general-discussion/460599/blind-75-leetcode-questions" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-link mr-1"></i> LeetCode Blind 75</a>
-                <a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-video mr-1"></i> Striver's A2Z Course</a>
+            <h3 class="text-2xl font-extrabold text-slate-900 mb-4">{{ title }}</h3>
+            <p class="text-slate-500 mb-8 leading-relaxed font-medium">{{ desc }}</p>
+            
+            <div class="mt-auto">
+                <a href="{{ link }}" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-slate-900 hover:text-white text-slate-800 font-bold py-3 rounded-xl transition-all border border-slate-200">
+                    Visit Training Center <i class="fas fa-external-link-alt ml-2 text-xs"></i>
+                </a>
             </div>
         </div>
-
-        <div class="bg-white p-6 rounded-xl border-2 transition duration-200 relative flex flex-col h-full
-            {% if weak_skill == 'Projects' %} border-blue-500 shadow-xl bg-blue-50 ring-4 ring-blue-100 {% else %} border-gray-100 shadow-md hover:shadow-lg {% endif %}">
-            
-            {% if weak_skill == 'Projects' %}
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
-                <i class="fas fa-star text-yellow-300 mr-1"></i> Recommended Focus
-            </div>
-            {% endif %}
-
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl mr-3">
-                    <i class="fas fa-laptop-code"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">Projects</h3>
-            </div>
-            <p class="text-gray-600 mb-6 flex-grow text-sm">Build practical, end-to-end applications that prove your technical abilities to recruiters.</p>
-            
-            <div class="space-y-2 mt-auto">
-                <a href="https://www.freecodecamp.org/learn" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-link mr-1"></i> FreeCodeCamp (Full Stack)</a>
-                <a href="https://github.com/florinpop17/app-ideas" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-book mr-1"></i> Project Ideas (GitHub)</a>
-            </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl border-2 transition duration-200 relative flex flex-col h-full
-            {% if weak_skill == 'Internships' %} border-blue-500 shadow-xl bg-blue-50 ring-4 ring-blue-100 {% else %} border-gray-100 shadow-md hover:shadow-lg {% endif %}">
-            
-            {% if weak_skill == 'Internships' %}
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
-                <i class="fas fa-star text-yellow-300 mr-1"></i> Recommended Focus
-            </div>
-            {% endif %}
-
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-3">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">Internships</h3>
-            </div>
-            <p class="text-gray-600 mb-6 flex-grow text-sm">Gain industry experience by working on real-world business problems at a company.</p>
-            
-            <div class="space-y-2 mt-auto">
-                <a href="https://www.theforage.com/" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-search mr-1"></i> Forage (Virtual Internships)</a>
-                <a href="https://internshala.com/" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-code-branch mr-1"></i> Internshala</a>
-            </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl border-2 transition duration-200 relative flex flex-col h-full
-            {% if weak_skill == 'Comm Skills' %} border-blue-500 shadow-xl bg-blue-50 ring-4 ring-blue-100 {% else %} border-gray-100 shadow-md hover:shadow-lg {% endif %}">
-            
-            {% if weak_skill == 'Comm Skills' %}
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
-                <i class="fas fa-star text-yellow-300 mr-1"></i> Recommended Focus
-            </div>
-            {% endif %}
-
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-3">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">Comm Skills</h3>
-            </div>
-            <p class="text-gray-600 mb-6 flex-grow text-sm">Improve how you articulate your thoughts during behavioral and technical HR rounds.</p>
-            
-            <div class="space-y-2 mt-auto">
-                <a href="https://www.pramp.com/" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-users mr-1"></i> Pramp Mock Interviews</a>
-                <a href="https://www.themuse.com/advice/star-method-interview-questions" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-file-alt mr-1"></i> The STAR Method</a>
-            </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl border-2 transition duration-200 relative flex flex-col h-full
-            {% if weak_skill == 'CGPA' %} border-blue-500 shadow-xl bg-blue-50 ring-4 ring-blue-100 {% else %} border-gray-100 shadow-md hover:shadow-lg {% endif %}">
-            
-            {% if weak_skill == 'CGPA' %}
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
-                <i class="fas fa-star text-yellow-300 mr-1"></i> Recommended Focus
-            </div>
-            {% endif %}
-
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl mr-3">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">Academics</h3>
-            </div>
-            <p class="text-gray-600 mb-6 flex-grow text-sm">Boost your core university subjects to easily clear the initial company screening rounds.</p>
-            
-            <div class="space-y-2 mt-auto">
-                <a href="https://www.geeksforgeeks.org/computer-science-projects/" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-clock mr-1"></i> GeeksforGeeks (CS Subjects)</a>
-                <a href="https://nptel.ac.in/" target="_blank" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded transition text-sm"><i class="fas fa-university mr-1"></i> NPTEL Courses</a>
-            </div>
-        </div>
-
+        {% endfor %}
     </div>
 
-    <div class="mt-12 pt-8 border-t border-gray-200 text-center">
-        <p class="text-gray-500 mb-4">Finished your training block?</p>
-        <a href="/predictor" class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-8 rounded-lg shadow transition">
-            <i class="fas fa-redo mr-2"></i> Retake the Predictor Test
+    <div class="mt-20 py-12 border-t border-slate-200 text-center">
+        <a href="/predictor" class="inline-flex items-center space-x-3 bg-slate-900 text-white font-bold py-4 px-10 rounded-2xl shadow-xl hover:bg-black transition">
+            <i class="fas fa-redo"></i>
+            <span>Retake Evaluation</span>
         </a>
     </div>
 
