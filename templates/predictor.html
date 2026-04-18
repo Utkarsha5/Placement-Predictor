@@ -1,115 +1,217 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="max-w-5xl mx-auto px-4">
-    <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">ML Placement Predictor</h1>
-        <p class="text-gray-500 mt-2">Enter your stats and select an algorithm to generate your probability score.</p>
-    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<style>
+    .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2rem; }
+    .dark .glass-card { background: rgba(15, 23, 42, 0.4); }
+    
+    /* ULTRA MODERN SLIDERS */
+    .slider-container input[type=range] {
+        -webkit-appearance: none; width: 100%; height: 8px; border-radius: 5px;
+        background: linear-gradient(to right, #6366f1 0%, #6366f1 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 100%);
+        outline: none; transition: all 0.2s;
+    }
+
+    /* Thumb Styling with Enlargement on Active */
+    .slider-container input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%;
+        background: #fff; cursor: pointer; border: 3px solid #6366f1;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+
+    .slider-container input[type=range]:active::-webkit-slider-thumb {
+        transform: scale(1.6); /* Enlarges on tap/click */
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    }
+
+    select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+</style>
+
+<div class="max-w-7xl mx-auto px-4 md:px-8 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
         
-        <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
-            <h2 class="text-xl font-bold mb-6 text-gray-700 border-b pb-2">
-                <i class="fas fa-user-edit mr-2"></i> Student Profile
-            </h2>
-            <form action="/predictor" method="POST" class="space-y-4">
-                
-                <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Branch</label>
-                    <select name="branch" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
-                        <option value="" disabled {% if not submitted %}selected{% endif %}>Select your branch...</option>
-                        {% for b_val in ['CSE', 'ECE', 'EE', 'ME', 'Materials', 'Civil', 'Chemical'] %}
-                            <option value="{{ b_val }}" {% if request.form['branch'] == b_val %}selected{% endif %}>{{ b_val }}</option>
+        <!-- Controls Column -->
+        <div class="lg:col-span-5 glass-card p-8 md:p-10 space-y-8 shadow-2xl">
+            <div>
+                <h2 class="text-3xl font-black mb-2">Analysis Hub</h2>
+                <p class="text-sm opacity-50">Adjust your profile live to see placement impacts.</p>
+            </div>
+
+            <div class="space-y-6" id="inputForm">
+                <!-- BRANCH DROPDOWN -->
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 ml-1">Your Branch</label>
+                    <select id="branch" class="w-full p-4 rounded-2xl outline-none font-bold text-sm cursor-pointer border border-white/5 bg-slate-100 dark:bg-slate-800">
+                        {% for b in ['CSE', 'ECE', 'EE', 'ME', 'Materials', 'Civil', 'Chemical'] %}
+                        <option value="{{ b }}">{{ b }} Engineering</option>
                         {% endfor %}
                     </select>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">CGPA (0.0 - 10.0)</label>
-                        <input type="number" step="0.01" min="0" max="10" name="cgpa" 
-                               value="{{ request.form['cgpa'] if submitted else '' }}" 
-                               required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">DSA Score (1 - 10)</label>
-                        <input type="number" step="0.1" min="1" max="10" name="dsa" 
-                               value="{{ request.form['dsa'] if submitted else '' }}" 
-                               required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
+                <div class="slider-container space-y-3">
+                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
+                        <span>CGPA</span> <span id="val-cgpa" class="text-indigo-500 font-black">8.0</span>
+                    </label>
+                    <input type="range" id="cgpa" min="5" max="10" step="0.1" value="8.0" class="slider">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">Number of Projects</label>
-                        <input type="number" min="0" name="projects" 
-                               value="{{ request.form['projects'] if submitted else '' }}" 
-                               required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">Internships</label>
-                        <input type="number" min="0" name="internship" 
-                               value="{{ request.form['internship'] if submitted else '' }}" 
-                               required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
+                <div class="slider-container space-y-3">
+                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
+                        <span>DSA Logic</span> <span id="val-dsa" class="text-indigo-500 font-black">7.0</span>
+                    </label>
+                    <input type="range" id="dsa" min="1" max="10" step="0.5" value="7.0" class="slider">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Communication Skills (1 - 10)</label>
-                    <input type="number" step="0.1" min="1" max="10" name="comm" 
-                           value="{{ request.form['comm'] if submitted else '' }}" 
-                           required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-
-                <div class="pt-4 border-t mt-4 bg-gray-50 p-4 rounded-lg border">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Select Prediction Engine</label>
-                    <div class="flex flex-col space-y-2">
-                        {% for m_val, m_label in [('linear', 'Linear (Basic)'), ('polynomial', 'Polynomial (Intermediate)'), ('logistic', 'Logistic (Advanced)')] %}
-                        <label class="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer">
-                            <input type="radio" name="model_type" value="{{ m_val }}" 
-                                   {% if (submitted and request.form['model_type'] == m_val) or (not submitted and m_val == 'logistic') %}checked{% endif %} 
-                                   required class="w-4 h-4 text-blue-600">
-                            <span class="font-medium">{{ m_label }}</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div class="slider-container space-y-3">
+                        <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
+                            <span>Projects</span> <span id="val-projects" class="text-indigo-500 font-black">2</span>
                         </label>
-                        {% endfor %}
+                        <input type="range" id="projects" min="0" max="10" step="1" value="2" class="slider">
+                    </div>
+                    <div class="slider-container space-y-3">
+                        <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
+                            <span>Internships</span> <span id="val-internship" class="text-indigo-500 font-black">1</span>
+                        </label>
+                        <input type="range" id="internship" min="0" max="5" step="1" value="1" class="slider">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition shadow-md mt-4">
-                    Run Prediction Model
-                </button>
-            </form>
+                <div class="slider-container space-y-3">
+                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
+                        <span>Communication</span> <span id="val-comm" class="text-indigo-500 font-black">7.0</span>
+                    </label>
+                    <input type="range" id="comm" min="1" max="10" step="0.5" value="7.0" class="slider">
+                </div>
+
+                <div class="p-1.5 bg-black/5 dark:bg-white/5 rounded-2xl flex gap-1 border border-white/5">
+                    <button onclick="setModel('logistic')" id="btn-logistic" class="flex-1 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 text-white shadow-lg transition-all">Logistic</button>
+                    <button onclick="setModel('polynomial')" id="btn-polynomial" class="flex-1 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Poly</button>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 flex flex-col justify-center">
-            {% if submitted %}
-                <div class="text-center mb-6">
-                    <h2 class="text-lg text-gray-500 font-semibold mb-1">Placement Probability</h2>
-                    <div class="text-5xl font-black {{ result_color }} mb-2">{{ probability }}%</div>
-                    <p class="text-lg font-bold text-gray-700">{{ result_text }}</p>
+        <!-- Dashboard Column -->
+        <div class="lg:col-span-7 space-y-8">
+            <div class="bg-gradient-to-br from-indigo-600 to-violet-700 p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div class="text-center md:text-left">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-2">Live Probability</p>
+                        <h2 id="display-prob" class="text-8xl font-black tracking-tighter">0.0<span class="text-3xl opacity-40">%</span></h2>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 text-center min-w-[180px]">
+                        <p class="text-[9px] font-black uppercase tracking-widest opacity-50 mb-1">Bottleneck</p>
+                        <p id="display-weakest" class="text-xl font-black text-white">Calculating...</p>
+                    </div>
                 </div>
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+            </div>
 
-                <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
-                    <div class="bg-blue-600 h-3 rounded-full transition-all duration-1000" style="width: {{ probability }}%"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-6 min-h-[300px] flex flex-col">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6">Explainable AI (Feature Impact)</h3>
+                    <div class="flex-grow flex items-center"><canvas id="impactChart"></canvas></div>
                 </div>
-
-                <div class="bg-blue-50 p-6 rounded-lg mb-6 border border-blue-100 text-center">
-                    <p class="text-sm text-gray-600 mb-1">The algorithm identified your weakest link as:</p>
-                    <p class="text-2xl font-bold text-red-600 mb-4">{{ weakest }}</p>
-                    <a href="{{ url_for('gym', weak_skill=weakest) }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-full transition text-sm shadow-md">
-                        <i class="fas fa-dumbbell mr-1"></i> Train this skill in the Gym
-                    </a>
+                <div class="glass-card p-6 min-h-[300px] flex flex-col">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6">Profile Balance</h3>
+                    <div class="flex-grow flex items-center"><canvas id="radarChart"></canvas></div>
                 </div>
-            {% else %}
-                <div class="text-center text-gray-400 py-10">
-                    <i class="fas fa-clipboard-list text-6xl mb-4 text-gray-300"></i>
-                    <h2 class="text-xl font-bold mb-2">Awaiting Data</h2>
-                    <p class="text-sm">Submit your profile on the left to see your results and unlock the Training Gym.</p>
-                </div>
-            {% endif %}
+            </div>
         </div>
-
     </div>
 </div>
+
+<script>
+let modelType = 'logistic';
+let impactChart, radarChart;
+
+function initCharts() {
+    // IMPACT BAR CHART
+    impactChart = new Chart(document.getElementById('impactChart'), {
+        type: 'bar',
+        data: { 
+            labels: ['CGPA', 'DSA', 'Projects', 'Internships', 'Comm'], 
+            datasets: [{ data: [0,0,0,0,0], backgroundColor: '#6366f1', borderRadius: 10 }] 
+        },
+        options: { 
+            indexAxis: 'y', 
+            plugins: { legend: { display: false } }, 
+            scales: { x: { grid: { display: false }, ticks: { display: false } }, y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 10 } } } } 
+        }
+    });
+
+    // PROFILE RADAR CHART
+    radarChart = new Chart(document.getElementById('radarChart'), {
+        type: 'radar',
+        data: { 
+            labels: ['CGPA', 'DSA', 'Projects', 'Internships', 'Comm'], 
+            datasets: [{ data: [0,0,0,0,0], backgroundColor: 'rgba(99, 102, 241, 0.2)', borderColor: '#6366f1', borderWidth: 2, pointRadius: 0 }] 
+        },
+        options: { 
+            scales: { r: { min: 0, max: 10, ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.05)' }, angleLines: { color: 'rgba(255,255,255,0.05)' }, pointLabels: { font: { size: 9, weight: 'bold' } } } }, 
+            plugins: { legend: { display: false } } 
+        }
+    });
+}
+
+function updateSliderBackground(slider) {
+    const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = `linear-gradient(to right, #6366f1 0%, #6366f1 ${val}%, rgba(255,255,255,0.1) ${val}%, rgba(255,255,255,0.1) 100%)`;
+}
+
+function setModel(type) {
+    modelType = type;
+    document.querySelectorAll('[id^="btn-"]').forEach(b => b.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg'));
+    document.getElementById('btn-' + type).classList.add('bg-indigo-600', 'text-white', 'shadow-lg');
+    updatePrediction();
+}
+
+async function updatePrediction() {
+    const data = {
+        branch: document.getElementById('branch').value,
+        cgpa: document.getElementById('cgpa').value,
+        dsa: document.getElementById('dsa').value,
+        projects: document.getElementById('projects').value,
+        internship: document.getElementById('internship').value,
+        comm: document.getElementById('comm').value,
+        model_type: modelType
+    };
+
+    // Update Label UI
+    Object.keys(data).forEach(k => { if(document.getElementById('val-'+k)) document.getElementById('val-'+k).innerText = data[k]; });
+
+    const res = await fetch('/api/predict', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    const result = await res.json();
+
+    // Update Dashboard
+    document.getElementById('display-prob').innerHTML = `${result.probability}<span class="text-3xl opacity-40">%</span>`;
+    document.getElementById('display-weakest').innerText = result.weakest;
+
+    // Correctly Map Charts
+    radarChart.data.datasets[0].data = [data.cgpa, data.dsa, data.projects, data.internship * 2, data.comm];
+    radarChart.update();
+
+    impactChart.data.datasets[0].data = result.importance; // Uses the explicit order from app.py
+    impactChart.data.datasets[0].backgroundColor = result.importance.map(v => v >= 0 ? '#10b981' : '#f43f5e');
+    impactChart.update();
+}
+
+// Event Listeners
+document.querySelectorAll('.slider').forEach(s => {
+    s.addEventListener('input', () => {
+        updateSliderBackground(s);
+        updatePrediction();
+    });
+    updateSliderBackground(s); // Initial color
+});
+document.getElementById('branch').addEventListener('change', updatePrediction);
+
+initCharts();
+updatePrediction();
+</script>
 {% endblock %}
