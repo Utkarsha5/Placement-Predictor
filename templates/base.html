@@ -3,48 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusML Placement Hub</title>
+    <title>CampusML | AI Placement Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Logic for Dark Mode Toggle
+        tailwind.config = { darkMode: 'class' }
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
+        window.onload = () => {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .dark .glass { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .mesh-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0, transparent 50%);
+        }
+        .dark .mesh-bg { background-color: #020617; background-image: none; }
+    </style>
 </head>
-<body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+<body class="mesh-bg flex flex-col min-h-screen text-slate-900 dark:text-slate-100 transition-colors duration-300">
 
-    <nav class="bg-blue-700 shadow-md">
-        <div class="max-w-6xl mx-auto px-4">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center py-4">
-                
-                <div class="flex items-center space-x-2 text-white">
-                    <i class="fas fa-graduation-cap text-2xl"></i>
-                    <a href="/" class="font-bold text-xl tracking-wide">CampusML</a>
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-600 p-2 rounded-lg shadow-lg">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <a href="/" class="font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-violet-500">
+                        CampusML
+                    </a>
                 </div>
                 
-                <div class="flex items-center space-x-6">
-                    <a href="/" class="text-blue-100 hover:text-white font-medium transition">
-                        <i class="fas fa-home mr-1"></i> Home
-                    </a>
-                    <a href="/predictor" class="text-blue-100 hover:text-white font-medium transition">
-                        <i class="fas fa-chart-line mr-1"></i> Predictor
-                    </a>
-                    <a href="/gym" class="text-blue-100 hover:text-white font-medium transition">
-                        <i class="fas fa-dumbbell mr-1"></i> The Gym
-                    </a>
+                <div class="flex items-center space-x-8">
+                    <a href="/" class="hidden md:block text-slate-600 dark:text-slate-400 hover:text-indigo-500 font-semibold transition">Home</a>
+                    <a href="/predictor" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500 font-semibold transition">Predictor</a>
+                    <a href="/gym" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500 font-semibold transition">Gym</a>
                     
-                    <a href="/reset" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-1.5 px-4 rounded-full shadow transition ml-4">
-                        <i class="fas fa-trash-alt mr-1"></i> Reset Data
+                    <!-- Dark Mode Toggle Button -->
+                    <button onclick="toggleTheme()" class="p-2 bg-slate-200 dark:bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center transition">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+
+                    <a href="/reset" class="hidden md:block bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 text-rose-600 dark:text-rose-400 text-sm font-bold py-2 px-5 rounded-full border border-rose-200 dark:border-rose-800 transition">
+                        Reset
                     </a>
                 </div>
-
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow w-full py-8">
+    <!-- Main Content Area (ONLY ONE BLOCK HERE) -->
+    <main class="flex-grow w-full">
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 py-6 text-center mt-auto">
-        <p class="text-sm">Built with Multi-Model Machine Learning (Linear, Poly, Logistic)</p>
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 py-8 text-center mt-auto">
+        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">
+            Powered by Multi-Model Machine Learning Architecture
+        </p>
     </footer>
 
 </body>
