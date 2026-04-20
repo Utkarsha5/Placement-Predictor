@@ -5,119 +5,85 @@
 <style>
     .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2rem; }
     .dark .glass-card { background: rgba(15, 23, 42, 0.4); }
-    
-    /* ULTRA MODERN SLIDERS */
     .slider-container input[type=range] {
         -webkit-appearance: none; width: 100%; height: 8px; border-radius: 5px;
-        background: linear-gradient(to right, #6366f1 0%, #6366f1 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 100%);
-        outline: none; transition: all 0.2s;
+        background: rgba(255, 255, 255, 0.1); outline: none; transition: all 0.2s;
     }
-
-    /* Thumb Styling with Enlargement on Active */
     .slider-container input[type=range]::-webkit-slider-thumb {
         -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%;
         background: #fff; cursor: pointer; border: 3px solid #6366f1;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s;
         box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
     }
-
-    .slider-container input[type=range]:active::-webkit-slider-thumb {
-        transform: scale(1.6); /* Enlarges on tap/click */
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
-    }
-
     select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
 </style>
 
 <div class="max-w-7xl mx-auto px-4 md:px-8 py-10">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        
-        <!-- Controls Column -->
+        <!-- Controls -->
         <div class="lg:col-span-5 glass-card p-8 md:p-10 space-y-8 shadow-2xl">
-            <div>
-                <h2 class="text-3xl font-black mb-2">Analysis Hub</h2>
-                <p class="text-sm opacity-50">Adjust your profile live to see placement impacts.</p>
-            </div>
-
-            <div class="space-y-6" id="inputForm">
-                <!-- BRANCH DROPDOWN -->
+            <h2 class="text-3xl font-black mb-2">Analysis Hub</h2>
+            <div class="space-y-6">
                 <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 ml-1">Your Branch</label>
-                    <select id="branch" class="w-full p-4 rounded-2xl outline-none font-bold text-sm cursor-pointer border border-white/5 bg-slate-100 dark:bg-slate-800">
-                        {% for b in ['CSE', 'ECE', 'EE', 'ME', 'Materials', 'Civil', 'Chemical'] %}
-                        <option value="{{ b }}">{{ b }} Engineering</option>
-                        {% endfor %}
+                    <label class="text-[10px] font-black uppercase tracking-widest opacity-40">Your Branch</label>
+                    <select id="branch" class="w-full p-4 rounded-2xl outline-none font-bold text-sm bg-slate-100 dark:bg-slate-800 border border-white/5">
+                        {% for b in ['CSE', 'ECE', 'EE', 'ME', 'Materials', 'Civil', 'Chemical'] %}<option value="{{ b }}">{{ b }} Engineering</option>{% endfor %}
                     </select>
                 </div>
 
                 <div class="slider-container space-y-3">
-                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
-                        <span>CGPA</span> <span id="val-cgpa" class="text-indigo-500 font-black">8.0</span>
-                    </label>
+                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60"><span>CGPA</span> <span id="val-cgpa" class="text-indigo-500 font-black">8.0</span></label>
                     <input type="range" id="cgpa" min="5" max="10" step="0.1" value="8.0" class="slider">
                 </div>
 
                 <div class="slider-container space-y-3">
-                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
-                        <span>DSA Logic</span> <span id="val-dsa" class="text-indigo-500 font-black">7.0</span>
-                    </label>
+                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60"><span>DSA Logic</span> <span id="val-dsa" class="text-indigo-500 font-black">7.0</span></label>
                     <input type="range" id="dsa" min="1" max="10" step="0.5" value="7.0" class="slider">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div class="grid grid-cols-2 gap-8">
                     <div class="slider-container space-y-3">
-                        <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
-                            <span>Projects</span> <span id="val-projects" class="text-indigo-500 font-black">2</span>
-                        </label>
+                        <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60"><span>Projects</span> <span id="val-projects" class="text-indigo-500 font-black">2</span></label>
                         <input type="range" id="projects" min="0" max="10" step="1" value="2" class="slider">
                     </div>
                     <div class="slider-container space-y-3">
-                        <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
-                            <span>Internships</span> <span id="val-internship" class="text-indigo-500 font-black">1</span>
-                        </label>
+                        <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60"><span>Internships</span> <span id="val-internship" class="text-indigo-500 font-black">1</span></label>
                         <input type="range" id="internship" min="0" max="5" step="1" value="1" class="slider">
                     </div>
                 </div>
 
                 <div class="slider-container space-y-3">
-                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60">
-                        <span>Communication</span> <span id="val-comm" class="text-indigo-500 font-black">7.0</span>
-                    </label>
+                    <label class="flex justify-between text-xs font-bold uppercase tracking-widest opacity-60"><span>Communication</span> <span id="val-comm" class="text-indigo-500 font-black">7.0</span></label>
                     <input type="range" id="comm" min="1" max="10" step="0.5" value="7.0" class="slider">
                 </div>
 
                 <div class="p-1.5 bg-black/5 dark:bg-white/5 rounded-2xl flex gap-1 border border-white/5">
+                    <button onclick="setModel('linear')" id="btn-linear" class="flex-1 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Linear</button>
                     <button onclick="setModel('logistic')" id="btn-logistic" class="flex-1 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest bg-indigo-600 text-white shadow-lg transition-all">Logistic</button>
                     <button onclick="setModel('polynomial')" id="btn-polynomial" class="flex-1 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Poly</button>
                 </div>
+
+                <form action="/download_report" method="POST" id="downloadForm">
+                    <input type="hidden" name="branch" id="pdf-branch"><input type="hidden" name="cgpa" id="pdf-cgpa"><input type="hidden" name="dsa" id="pdf-dsa"><input type="hidden" name="projects" id="pdf-projects"><input type="hidden" name="internships" id="pdf-internships"><input type="hidden" name="comm" id="pdf-comm"><input type="hidden" name="prob" id="pdf-prob"><input type="hidden" name="weakest" id="pdf-weakest">
+                    <button type="submit" class="w-full py-4 rounded-2xl bg-slate-100 dark:bg-white/5 border border-white/10 font-black text-xs uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all">Download Analysis PDF</button>
+                </form>
             </div>
         </div>
 
-        <!-- Dashboard Column -->
+        <!-- Dashboard -->
         <div class="lg:col-span-7 space-y-8">
-            <div class="bg-gradient-to-br from-indigo-600 to-violet-700 p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
-                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div class="text-center md:text-left">
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-2">Live Probability</p>
-                        <h2 id="display-prob" class="text-8xl font-black tracking-tighter">0.0<span class="text-3xl opacity-40">%</span></h2>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 text-center min-w-[180px]">
-                        <p class="text-[9px] font-black uppercase tracking-widest opacity-50 mb-1">Bottleneck</p>
-                        <p id="display-weakest" class="text-xl font-black text-white">Calculating...</p>
-                    </div>
+            <div class="bg-gradient-to-br from-indigo-600 to-violet-700 p-10 rounded-[2.5rem] text-white shadow-2xl flex flex-col md:flex-row justify-between items-center gap-8 relative overflow-hidden">
+                <div class="relative z-10 text-center md:text-left">
+                    <p class="text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">Live Probability</p>
+                    <h2 id="display-prob" class="text-8xl font-black tracking-tighter">0.0<span class="text-3xl opacity-40">%</span></h2>
                 </div>
-                <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+                <div class="relative z-10 bg-white/10 p-6 rounded-3xl border border-white/10 text-center min-w-[180px]">
+                    <p class="text-[9px] font-black uppercase tracking-widest opacity-50 mb-1">Bottleneck</p>
+                    <p id="display-weakest" class="text-xl font-black">Calculating...</p>
+                </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-6 min-h-[300px] flex flex-col">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6">Explainable AI (Feature Impact)</h3>
-                    <div class="flex-grow flex items-center"><canvas id="impactChart"></canvas></div>
-                </div>
-                <div class="glass-card p-6 min-h-[300px] flex flex-col">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6">Profile Balance</h3>
-                    <div class="flex-grow flex items-center"><canvas id="radarChart"></canvas></div>
-                </div>
+                <div class="glass-card p-6 min-h-[300px] flex flex-col"><h3 class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6">Explainable AI (Feature Impact)</h3><canvas id="impactChart"></canvas></div>
+                <div class="glass-card p-6 min-h-[300px] flex flex-col"><h3 class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-6">Profile Balance</h3><canvas id="radarChart"></canvas></div>
             </div>
         </div>
     </div>
@@ -127,43 +93,19 @@
 let modelType = 'logistic';
 let impactChart, radarChart;
 
-function initCharts() {
-    // IMPACT BAR CHART
-    impactChart = new Chart(document.getElementById('impactChart'), {
-        type: 'bar',
-        data: { 
-            labels: ['CGPA', 'DSA', 'Projects', 'Internships', 'Comm'], 
-            datasets: [{ data: [0,0,0,0,0], backgroundColor: '#6366f1', borderRadius: 10 }] 
-        },
-        options: { 
-            indexAxis: 'y', 
-            plugins: { legend: { display: false } }, 
-            scales: { x: { grid: { display: false }, ticks: { display: false } }, y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 10 } } } } 
-        }
-    });
-
-    // PROFILE RADAR CHART
-    radarChart = new Chart(document.getElementById('radarChart'), {
-        type: 'radar',
-        data: { 
-            labels: ['CGPA', 'DSA', 'Projects', 'Internships', 'Comm'], 
-            datasets: [{ data: [0,0,0,0,0], backgroundColor: 'rgba(99, 102, 241, 0.2)', borderColor: '#6366f1', borderWidth: 2, pointRadius: 0 }] 
-        },
-        options: { 
-            scales: { r: { min: 0, max: 10, ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.05)' }, angleLines: { color: 'rgba(255,255,255,0.05)' }, pointLabels: { font: { size: 9, weight: 'bold' } } } }, 
-            plugins: { legend: { display: false } } 
-        }
-    });
-}
-
-function updateSliderBackground(slider) {
+function updateSliderVisuals(slider) {
     const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
     slider.style.background = `linear-gradient(to right, #6366f1 0%, #6366f1 ${val}%, rgba(255,255,255,0.1) ${val}%, rgba(255,255,255,0.1) 100%)`;
 }
 
+function initCharts() {
+    impactChart = new Chart(document.getElementById('impactChart'), { type: 'bar', data: { labels: ['CGPA', 'DSA', 'Projects', 'Internships', 'Comm'], datasets: [{ data: [0,0,0,0,0], backgroundColor: '#6366f1', borderRadius: 10 }] }, options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { ticks: { font: { weight: 'bold', size: 10 } } } } } });
+    radarChart = new Chart(document.getElementById('radarChart'), { type: 'radar', data: { labels: ['CGPA', 'DSA', 'Projects', 'Internships', 'Comm'], datasets: [{ data: [0,0,0,0,0], backgroundColor: 'rgba(99, 102, 241, 0.2)', borderColor: '#6366f1', borderWidth: 2, pointRadius: 0 }] }, options: { scales: { r: { min: 0, max: 10, ticks: { display: false } } }, plugins: { legend: { display: false } } } });
+}
+
 function setModel(type) {
     modelType = type;
-    document.querySelectorAll('[id^="btn-"]').forEach(b => b.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg'));
+    document.querySelectorAll('[id^="btn-"]').forEach(b => { b.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg'); b.classList.add('hover:bg-white/10'); });
     document.getElementById('btn-' + type).classList.add('bg-indigo-600', 'text-white', 'shadow-lg');
     updatePrediction();
 }
@@ -179,39 +121,29 @@ async function updatePrediction() {
         model_type: modelType
     };
 
-    // Update Label UI
-    Object.keys(data).forEach(k => { if(document.getElementById('val-'+k)) document.getElementById('val-'+k).innerText = data[k]; });
-
-    const res = await fetch('/api/predict', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+    Object.keys(data).forEach(k => { 
+        const s = document.getElementById(k);
+        if(s) { updateSliderVisuals(s); if(document.getElementById('val-'+k)) document.getElementById('val-'+k).innerText = data[k]; }
     });
+
+    const res = await fetch('/api/predict', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
     const result = await res.json();
 
-    // Update Dashboard
     document.getElementById('display-prob').innerHTML = `${result.probability}<span class="text-3xl opacity-40">%</span>`;
     document.getElementById('display-weakest').innerText = result.weakest;
 
-    // Correctly Map Charts
     radarChart.data.datasets[0].data = [data.cgpa, data.dsa, data.projects, data.internship * 2, data.comm];
     radarChart.update();
-
-    impactChart.data.datasets[0].data = result.importance; // Uses the explicit order from app.py
+    impactChart.data.datasets[0].data = result.importance;
     impactChart.data.datasets[0].backgroundColor = result.importance.map(v => v >= 0 ? '#10b981' : '#f43f5e');
     impactChart.update();
+
+    // Update PDF Form
+    document.getElementById('pdf-branch').value = data.branch; document.getElementById('pdf-cgpa').value = data.cgpa; document.getElementById('pdf-dsa').value = data.dsa; document.getElementById('pdf-projects').value = data.projects; document.getElementById('pdf-internships').value = data.internship; document.getElementById('pdf-comm').value = data.comm; document.getElementById('pdf-prob').value = result.probability; document.getElementById('pdf-weakest').value = result.weakest;
 }
 
-// Event Listeners
-document.querySelectorAll('.slider').forEach(s => {
-    s.addEventListener('input', () => {
-        updateSliderBackground(s);
-        updatePrediction();
-    });
-    updateSliderBackground(s); // Initial color
-});
+document.querySelectorAll('.slider').forEach(s => s.addEventListener('input', updatePrediction));
 document.getElementById('branch').addEventListener('change', updatePrediction);
-
-initCharts();
-updatePrediction();
+initCharts(); updatePrediction();
 </script>
 {% endblock %}
