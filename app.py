@@ -47,7 +47,11 @@ def find_weakest_skill(stats):
 # ==========================================
 # 3. Application Routes
 # ==========================================
-
+@app.route('/reset')
+def reset():
+    # Clears all saved stats from the session
+    session.clear() 
+    return redirect(url_for('home'))
 @app.route('/')
 def home():
     return render_template('home.html')
