@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify, session
 import pickle
-import pandas as pd
+import pandas as pd 
 import numpy as np
 from fpdf import FPDF
 import io
