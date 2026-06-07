@@ -1,4 +1,4 @@
-# train_linear.py - Team Member 1
+# train_linear.py
 import pandas as pd
 import pickle
 from sklearn.preprocessing import StandardScaler, OneHotEncoder

@@ -1,4 +1,4 @@
-# train_poly.py - Team Member 2
+# train_poly.py
 import pandas as pd
 import pickle
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, PolynomialFeatures

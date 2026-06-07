@@ -1,4 +1,4 @@
-# train_logistic.py - Team Member 3
+# train_logistic.py
 import pandas as pd
 import pickle
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
