@@ -6,6 +6,16 @@ env/
 __pycache__/
 *.pyc
 
+# Generated model files
+*.pkl
+
+# Flask instance folder
+instance/
+
+# IDE / Editor
+.vscode/
+.idea/
+
 # OS Files
 .DS_Store
 Thumbs.db

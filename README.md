@@ -1,50 +1,72 @@
-# CampusML: Student Placement Predictor 🎓🤖
+# CampusML — Placement Predictor
 
-CampusML is an end-to-end Machine Learning web application designed to evaluate a student's academic and behavioral metrics to predict their campus placement probability. 
+A Flask web app that predicts campus placement probability using three ML models. Built with a real-time interactive dashboard, downloadable PDF reports, and a personalized training gym.
 
-Instead of relying on a single algorithm, this project features a multi-model architecture that compares Linear, Logistic, and Polynomial regression outputs to provide a highly accurate evaluation. It also features a dynamic "Training Gym" to identify skill gaps and provide targeted learning resources.
+## Features
 
-## 🚀 Key Features
-* **Multi-Model ML Pipeline:** Implements Logistic Regression, Linear Regression, and Polynomial Regression to evaluate prediction variance.
-* **Robust Data Preprocessing:** Utilizes `ColumnTransformer`, `StandardScaler` for continuous numerical data, and `OneHotEncoder` for categorical variables.
-* **Interactive Flask Backend:** A fully functioning MVC-style backend that routes dynamic feature sets and processes HTTP requests.
-* **Training Gym Dashboard:** Algorithmic logic that flags weaknesses against industry benchmarks and routes students to high-quality CS resources.
-* **PDF Report Generation:** Dynamically generates downloadable performance reports utilizing FPDF streams.
+- **Multi-Model Prediction** — Switch between Logistic, Linear, and Polynomial Regression in real time
+- **Interactive Dashboard** — Sliders for CGPA, DSA, Projects, Internships, and Communication skills with live Chart.js visualizations
+- **Training Gym** — Identifies strengths/weaknesses and links to curated resources
+- **PDF Reports** — Download a formatted placement readiness report
+- **Dark Mode** — Full dark/light theme toggle
 
-## 💻 Tech Stack
-* **Language:** Python 3
-* **Machine Learning:** Scikit-Learn, Pandas, NumPy
-* **Backend Framework:** Flask
-* **Data Visualization:** Matplotlib
-* **Frontend:** HTML5, CSS3
+## Models
 
-## 🛠️ How to Run Locally
+| Model | Type | Use Case |
+|-------|------|----------|
+| Logistic Regression | Classification | Primary — gives placement probability |
+| Linear Regression | Regression | Interpretable baseline |
+| Polynomial Regression (degree 2) | Regression | Captures non-linear feature interactions |
 
-If you would like to run this project on your local machine, follow these steps:
+## Tech Stack
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Utkarsha5/Placement-Predictor.git
-   cd Placement-Predictor
-   ```
+- **Backend:** Flask, scikit-learn, pandas, NumPy
+- **Frontend:** Tailwind CSS, Chart.js, Font Awesome
+- **PDF:** FPDF
 
-2. **Install the required dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Setup
 
-3. **Train the models and generate the `.pkl` files:**
-   ```bash
-   python train_advanced.py
-   ```
+```bash
+# Clone the repo
+git clone https://github.com/<your-username>/Placement-Predictor.git
+cd Placement-Predictor
 
-4. **Start the Flask web server:**
-   ```bash
-   python app.py
-   ```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate
 
-5. **Open your browser and navigate to:**
-   `http://127.0.0.1:5001`
+# Install dependencies
+pip install -r requirements.txt
 
----
-*Built by Utkarsha Shrivastava and Nikhil Sharma*
+# Train the models (generates .pkl files)
+python models/train.py
+
+# Run the app
+python app.py
+```
+
+The app will be available at `http://localhost:5001`.
+
+## Project Structure
+
+```
+├── app.py                 # Flask application
+├── requirements.txt       # Python dependencies
+├── data/
+│   └── manit_placement_dataset.csv
+├── models/
+│   └── train.py           # Trains all 3 models
+├── templates/
+│   ├── base.html          # Layout with navbar/footer
+│   ├── home.html          # Landing page
+│   ├── predictor.html     # Prediction dashboard
+│   └── gym.html           # Training recommendations
+```
+
+## Retraining Models
+
+```bash
+python models/train.py
+```
+
+This generates `logistic_model.pkl`, `linear_model.pkl`, and `poly_model.pkl` in the project root.

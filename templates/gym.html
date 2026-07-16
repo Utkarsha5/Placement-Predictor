@@ -7,14 +7,14 @@
         <h1 class="text-5xl font-extrabold text-yellow-900 tracking-tight mb-4">The Training <span class="text-indigo-600">Gym</span></h1>
         <p class="text-lg text-slate-500 font-medium">Strategic resources to bridge your skill gaps.</p>
         
-        {% if weak_skill %}
+        {% if weaknesses %}
         <div class="mt-10 bg-indigo-600 rounded-3xl p-8 text-left shadow-2xl shadow-indigo-100 relative overflow-hidden max-w-4xl mx-auto">
             <div class="relative z-10">
                 <div class="flex items-center space-x-3 text-indigo-100 mb-4">
                     <i class="fas fa-brain text-xl"></i>
                     <span class="font-bold uppercase tracking-widest text-xs">AI Performance Coach</span>
                 </div>
-                <h3 class="text-2xl md:text-3xl font-bold text-white leading-relaxed">"{{ ai_advice }}"</h3>
+                <h3 class="text-2xl md:text-3xl font-bold text-white leading-relaxed">"Focus on improving: {{ weaknesses | join(', ') }}"</h3>
             </div>
             <div class="absolute -right-20 -bottom-20 opacity-10 text-[200px] text-white">
                 <i class="fas fa-quote-right"></i>
@@ -34,9 +34,9 @@
 
         {% for id, title, desc, icon, colors, link in modules %}
         <div class="group bg-white p-8 rounded-3xl border border-slate-200 transition-all hover:shadow-2xl hover:-translate-y-2 relative flex flex-col h-full
-            {% if weak_skill == id %} ring-4 ring-indigo-600 ring-offset-4 border-transparent shadow-2xl {% endif %}">
+            {% if id in weaknesses %} ring-4 ring-indigo-600 ring-offset-4 border-transparent shadow-2xl {% endif %}">
             
-            {% if weak_skill == id %}
+            {% if id in weaknesses %}
             <div class="absolute -top-4 right-6 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
                 Priority
             </div>
